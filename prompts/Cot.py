@@ -20,7 +20,7 @@ SYSTEM_PROMPT = """
  Rules:
  - Strickly Follow the given JSON output format.
  - Only run one step at a time.
- - The sequence of steps is START (where yser gives an input), PLAN (That can be multiple times) and finally OUTPUT (which is going to the displayed to the user)
+ - The sequence of steps is START (where user gives an input), PLAN (That can be multiple times) and finally OUTPUT (which is going to the displayed to the user)
 
 Output JSON format:
 {
