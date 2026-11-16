@@ -7,6 +7,8 @@ from openai import (
     APIStatusError
 )
 from dotenv import load_dotenv
+from pydantic import BaseModel, Field
+from typing import Optional
 import requests
 load_dotenv()
 
@@ -74,34 +76,47 @@ avaiable_tool = {
     "get_weather": get_weather
 }
 
+class MyOutputFormat(BaseModel):
+    step: str = Field(..., description="The ID of the step. Example: PLAN, OUTPUT, TOOL, etc")
+    content: Optional[str] = Field(None, description="the optional string content for the step")
+    tool: Optional[str] = Field(None, description="the ID of the tool to call")
+    input: Optional[str] = Field(None, description="the input params for the tool")
+
 def main():
     message_history = [
         {"role": "system", "content": SYSTEM_PROMPT}
     ]
 
     user_query = input("> ")
-    
     message_history.append({"role": "user", "content": user_query})
 
     try:
         while True:
-                response = client.chat.completions.create(
+                response = client.beta.chat.completions.parse(
                     model="gemini-3.5-flash-lite",
-                    response_format={"type": "json_object"},
+                    response_format={
+                        "type": "json_schema",
+                        "json_schema": {
+                            "name": "MyOutputFormat",
+                            "schema": MyOutputFormat.model_json_schema(),
+                            "strict": True,
+                        },
+                    },
                     messages=message_history
                 )
             
                 raw_result = response.choices[0].message.content
                 message_history.append({"role": "assistant", "content": raw_result})
-                parsed_result = json.loads(raw_result)
+                parsed_result = MyOutputFormat.model_validate_json(raw_result)
+
                 print(f"parsed_result {parsed_result}")
-                if parsed_result.get("step") == "START":
-                    print("🔥", parsed_result.get("content"))
+                if parsed_result.step == "START":
+                    print("🔥", parsed_result.content)
                     continue
 
-                if parsed_result.get("step") == "TOOL":
-                    tool_to_call = parsed_result.get("tool")
-                    tool_input = parsed_result.get("input")
+                if parsed_result.step == "TOOL":
+                    tool_to_call = parsed_result.tool
+                    tool_input = parsed_result.input
                     print(f"👀: {tool_to_call} ({tool_input})")
                     tool_response = avaiable_tool[tool_to_call](tool_input)
 
@@ -118,16 +133,16 @@ def main():
                     })
                     continue
 
-                if parsed_result.get("step") == "PLAN":
-                    print("🧠", parsed_result.get("content"))
+                if parsed_result.step == "PLAN":
+                    print("🧠", parsed_result.content)
                     message_history.append({
                         "role": "user",
                         "content": "Continue with the next step."
                     })
                     continue
 
-                if parsed_result.get("step") == "OUTPUT":
-                    print("👍", parsed_result.get("content"))
+                if parsed_result.step == "OUTPUT":
+                    print("👍", parsed_result.content)
                 break
     
     except RateLimitError as e:
