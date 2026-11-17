@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from typing import Optional
 import requests
+import yfinance as yf
+
 load_dotenv()
 
 print(os.getenv("GEMINI_API_KEY"))
@@ -61,6 +63,29 @@ PLAN: { "step": "TOOL", "tool": "get_weather", "input": "delhi" }
 PLAN: { "step": "OBSERVE", "tool" : "get_weather", "output": "them temp of delhi is cloudy with 20 C"}
 PLAN: { "step": "PLAN", "content": "Great I got the weather info about the delhi" },
 OUTPUT: { "step": "OUTPUT", "content": "The current weather of delhi is 20 C with with some cloudy sky" }
+
+Example3:
+
+START: WHat is the stock price of reliance
+PLAN: { "step": "PLAN", "content": "Seems like user is instrested in getting the live stock price of a reliance stock" }
+PLAN: { "step": "PLAN", "content": "lets see if we have any avaiable took from the list of avaiable" },
+PLAN: { "step": "PLAN", "content": "But user can misspelled the stock name as well so first i need to get the correct releiance stock symbol" },
+PLAN: { "step": "PLAN", "content": "Suppose releiance get missspelled as relienaces like this tjhen we need to find the correct symblol" },
+PLAN: { "step": "PLAN", "content": "So we need to find the current symbol of reliance if the user is misspelled" },
+PLAN: { "step": "PLAN", "content": "Suppose user writes Yatra online ltd then we need to find the current symbol for this stock which is YATRA" },
+PLAN: { "step": "PLAN", "content": "suppose user is sarcching for the kalyan jwellers tjem his symbol we need to find that is KALYANKJIL" },
+PLAN: { "step": "PLAN", "content": "to get the stock symbol we need to find a tool" }
+PLAN: { "step": "PLAN", "content": "Great, we have a get_stock_symbol tool to get the stock symbol" }
+PLAN: { "step": "PLAN", "content": "I need to call get_stock_symbol tool for reveice the reliance stock symbol with the input reliance" }
+PLAN: { "step": "TOOL", "tool": "get_stock_symbol", "input": "inox" }
+PLAN: { "step": "OBSERVE", "tool": "get_stock_symbol", "output": "{'INOXWIND', 'INOXINDIA', 'PVRINOX', 'INOXGREEN'}" }
+PLAN: { "step": "PLAN", "content": "Great, we have get_stock_price tool abaiable from this query"}
+PLAN: { "step": "PLAN", "content": "I need to call get_stock_price tiik for reliance stock" },
+PLAN: { "step": "PLAN", "content": "After gettig the reliance symbol we will call the get_stock_price tool for the RELIANCE stock and reliance as an input " }
+PLAN: { "step": "TOOL", "tool": "get_stock_price", "input": "RELIANCE" },
+PLAN: { "step": "OBSERVE", "tool" : "get_stock_price", "output": "Stock price of NSE in nse is 2120 found and bse is 2129.6"},
+PLAN: { "step": "PLAN", "content": "Great I got the stock info about the Reliance" },
+OUTPUT: { "step": "OUTPUT", "content": "The current price of reliance in NSE is 2120 and in BSE is 2121" }
 """
 
 def get_weather(city: str):
@@ -72,8 +97,56 @@ def get_weather(city: str):
 
     return "Something went wrong"
 
+
+def get_stock_symbol(stockName: str):
+    """
+    Finds the official ticker symbol for a given company name or typo.
+    Example: 'tata moters' -> 'TATAMOTORS'
+    """
+    url = f"https://query2.finance.yahoo.com/v1/finance/search"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    params = {"q": stockName}
+    all_stock_symbol = set()
+
+    try:
+        res = requests.get(url, params=params, headers=headers).json()
+        quotes = res.get("quotes", [])
+
+        # Look for Indian exchange symbols ending in .NS or .BO    
+        for q in quotes:
+            symbol = q.get("symbol", "")
+            print(f"symbol => {symbol}")
+            if symbol.endswith(".NS") or symbol.endswith(".BO"):
+               all_stock_symbol.add(symbol.rsplit(".", 1)[0])
+        
+    except Exception:
+        pass
+
+    return sorted(all_stock_symbol)
+
+# print(get_stock_symbol("inox"))
+
+def get_stock_price(stockName: str):
+    stock = stockName.strip().upper()
+    # Get NSE Price
+    try:
+        nse_price = round(yf.Ticker(f"{stock}.NS").fast_info['last_price'], 2)
+    except Exception:
+        nse_price = "not found"
+    # Get BSE Price
+    try:
+        bse_price = round(yf.Ticker(f"{stock}.BO").fast_info['last_price'], 2)
+    except Exception:
+        bse_price = "not found"
+    # If neither is found, return null (None)
+    if nse_price == "not found" and bse_price == "not found":
+        return None
+    return f"Stock price of {stock} in nse is {nse_price} and bse is {bse_price}"
+
 avaiable_tool = {
-    "get_weather": get_weather
+    "get_weather": get_weather,
+    "get_stock_price": get_stock_price,
+    "get_stock_symbol": get_stock_symbol
 }
 
 class MyOutputFormat(BaseModel):
