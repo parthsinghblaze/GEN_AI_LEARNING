@@ -42,6 +42,10 @@ Output JSON format:
     "input": "string"
 }
 
+Available Tools:
+- get_weather(city: str): Take city as an input string and return weather condition
+- run_command(cmd: str): Takes a system linux command as string and executes the command on the user system and return the output of that command
+
 Example1: 
 START: Hey, Can you solve 2+2*5 / 10
 PLAN: {"step": "PLAN", content: "seems like user is intereted in math promblem"}
@@ -87,6 +91,11 @@ PLAN: { "step": "OBSERVE", "tool" : "get_stock_price", "output": "Stock price of
 PLAN: { "step": "PLAN", "content": "Great I got the stock info about the Reliance" },
 OUTPUT: { "step": "OUTPUT", "content": "The current price of reliance in NSE is 2120 and in BSE is 2121" }
 """
+
+def run_command(cmd: str):
+    result = os.system(cmd)
+    return result
+
 
 def get_weather(city: str):
     url = f"https://wttr.in/{city.lower()}?format=%C+%t"
@@ -146,7 +155,8 @@ def get_stock_price(stockName: str):
 avaiable_tool = {
     "get_weather": get_weather,
     "get_stock_price": get_stock_price,
-    "get_stock_symbol": get_stock_symbol
+    "get_stock_symbol": get_stock_symbol,
+    "run_command": run_command
 }
 
 class MyOutputFormat(BaseModel):
@@ -233,7 +243,8 @@ def main():
         import traceback
         traceback.print_exc()
 
-main()
+while True:
+    main()
 
 
 # https://wttr.in/daman

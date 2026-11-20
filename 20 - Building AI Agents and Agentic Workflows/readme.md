@@ -666,3 +666,18 @@ main()
 
 # https://wttr.in/daman
 ```
+5. Building a cli coding agent from scratch
+
+
+def run_command(cmd: str):
+    result = os.system(cmd)
+    return result
+
+Added the tool in the object
+avaiable_tool = {
+    "get_weather": get_weather,
+    "get_stock_price": get_stock_price,
+    "get_stock_symbol": get_stock_symbol,
+    "run_command": run_command
+}
+
