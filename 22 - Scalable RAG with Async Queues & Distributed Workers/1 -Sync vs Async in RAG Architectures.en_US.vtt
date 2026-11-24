@@ -1,0 +1,345 @@
+WEBVTT
+
+1
+00:00:00.160 --> 00:00:01.960
+All right guys, so now that you
+
+2
+00:00:01.960 --> 00:00:04.360
+are a master in the rag and you
+
+3
+00:00:04.360 --> 00:00:06.040
+understand that what rag
+
+4
+00:00:06.040 --> 00:00:07.720
+is, what is an indexing phase?
+
+5
+00:00:07.720 --> 00:00:09.440
+What is the retrieval phase?
+
+6
+00:00:09.440 --> 00:00:11.800
+Now there is a one fundamental
+
+7
+00:00:11.800 --> 00:00:13.320
+problem that is
+
+8
+00:00:13.320 --> 00:00:15.360
+still need to be addressed.
+
+9
+00:00:15.360 --> 00:00:17.200
+Now piu, we have already
+
+10
+00:00:17.200 --> 00:00:18.520
+coded everything and everything
+
+11
+00:00:18.520 --> 00:00:19.440
+is working right?
+
+12
+00:00:19.440 --> 00:00:21.080
+If, and, and what is the rule
+
+13
+00:00:21.080 --> 00:00:22.000
+of programming?
+
+14
+00:00:22.000 --> 00:00:23.640
+The rule of programming says that
+
+15
+00:00:23.640 --> 00:00:25.240
+if it works, do not touch it.
+
+16
+00:00:25.240 --> 00:00:26.440
+So you can see our indexing
+
+17
+00:00:26.440 --> 00:00:27.280
+code is also working.
+
+18
+00:00:27.280 --> 00:00:28.800
+Our chat code is also working.
+
+19
+00:00:29.440 --> 00:00:30.720
+So what is the problem there?
+
+20
+00:00:30.720 --> 00:00:33.680
+The problem is that this is not how
+
+21
+00:00:33.680 --> 00:00:35.760
+the production things looks like.
+
+22
+00:00:35.760 --> 00:00:38.040
+This is not how companies and real
+
+23
+00:00:38.040 --> 00:00:39.400
+world people are coding.
+
+24
+00:00:39.400 --> 00:00:41.280
+Because what is happening is
+
+25
+00:00:41.280 --> 00:00:43.600
+this is a synchronous approach.
+
+26
+00:00:44.160 --> 00:00:46.000
+That means you have written a code
+
+27
+00:00:46.000 --> 00:00:47.840
+that is index py, you run it
+
+28
+00:00:47.840 --> 00:00:50.240
+manually, this code runs
+
+29
+00:00:50.240 --> 00:00:52.280
+and you might have noticed that this
+
+30
+00:00:52.280 --> 00:00:55.060
+code takes some time to run.
+
+31
+00:00:55.060 --> 00:00:56.780
+It takes 10 seconds, 20 seconds
+
+32
+00:00:56.780 --> 00:00:59.540
+to run just for a single PDF, right?
+
+33
+00:01:00.100 --> 00:01:03.140
+Assume that I have 1000 PDF
+
+34
+00:01:03.140 --> 00:01:05.540
+files and every file has like
+
+35
+00:01:05.540 --> 00:01:07.220
+hundreds of pages, right?
+
+36
+00:01:07.220 --> 00:01:08.500
+This code is going
+
+37
+00:01:08.500 --> 00:01:09.940
+to take a lot of time.
+
+38
+00:01:09.940 --> 00:01:11.740
+And while this code is running,
+
+39
+00:01:11.740 --> 00:01:13.420
+this actually blocks my system.
+
+40
+00:01:13.420 --> 00:01:14.300
+Can you see that?
+
+41
+00:01:14.300 --> 00:01:15.900
+See right now my system is blocked
+
+42
+00:01:15.900 --> 00:01:17.140
+because it is doing something.
+
+43
+00:01:17.140 --> 00:01:18.700
+It is doing something synchronously.
+
+44
+00:01:18.700 --> 00:01:19.980
+I cannot do anything right now.
+
+45
+00:01:19.980 --> 00:01:22.220
+See, and just for a single file,
+
+46
+00:01:22.220 --> 00:01:24.180
+if it is taking so much of time,
+
+47
+00:01:24.180 --> 00:01:25.900
+imagine how much time it is
+
+48
+00:01:25.900 --> 00:01:28.160
+going to take for 1,000 files.
+
+49
+00:01:28.160 --> 00:01:28.880
+Okay?
+
+50
+00:01:28.880 --> 00:01:30.480
+So this is not how you actually
+
+51
+00:01:30.480 --> 00:01:32.800
+write code in production and similar
+
+52
+00:01:32.800 --> 00:01:34.200
+thing goes into the chat.
+
+53
+00:01:34.200 --> 00:01:35.560
+This is not how you write code.
+
+54
+00:01:35.560 --> 00:01:37.520
+This all is synchronous code, right?
+
+55
+00:01:37.520 --> 00:01:39.520
+It takes a lot of time.
+
+56
+00:01:39.520 --> 00:01:41.560
+So the problem is that right now
+
+57
+00:01:41.560 --> 00:01:43.360
+our code is working, but our
+
+58
+00:01:43.360 --> 00:01:45.160
+code is synchronous in nature.
+
+59
+00:01:45.160 --> 00:01:48.000
+That means it waits until
+
+60
+00:01:48.800 --> 00:01:53.290
+the process is complete.
+
+61
+00:01:53.290 --> 00:01:54.810
+That is the main problem.
+
+62
+00:01:55.450 --> 00:01:57.050
+Now the solution to it is
+
+63
+00:01:57.050 --> 00:01:58.370
+basically asynchronous.
+
+64
+00:01:58.370 --> 00:02:00.410
+The asynchronous says that, okay,
+
+65
+00:02:00.970 --> 00:02:03.690
+let's, let's you know, do this
+
+66
+00:02:03.690 --> 00:02:08.330
+in background and let user
+
+67
+00:02:08.330 --> 00:02:10.090
+do whatever he wants.
+
+68
+00:02:11.690 --> 00:02:12.330
+Okay?
+
+69
+00:02:12.330 --> 00:02:13.730
+So that means in this particular
+
+70
+00:02:13.730 --> 00:02:15.370
+section we are going to understand
+
+71
+00:02:15.370 --> 00:02:18.010
+that how we are going to convert our
+
+72
+00:02:18.010 --> 00:02:20.130
+synchronous code into async so that
+
+73
+00:02:20.130 --> 00:02:21.370
+you know, things can happen in the
+
+74
+00:02:21.370 --> 00:02:24.100
+background and user is free to use
+
+75
+00:02:24.100 --> 00:02:24.660
+their work.
+
+76
+00:02:24.660 --> 00:02:26.100
+So we are going to now use
+
+77
+00:02:26.100 --> 00:02:27.220
+fast API, we are going
+
+78
+00:02:27.220 --> 00:02:28.660
+to build APIs on top of it.
+
+79
+00:02:28.660 --> 00:02:30.300
+We are going to make asynchronous.
+
+80
+00:02:30.300 --> 00:02:31.540
+So this particular section
+
+81
+00:02:31.540 --> 00:02:32.380
+is going to be packed
+
+82
+00:02:32.380 --> 00:02:33.860
+with a lot of production ready
+
+83
+00:02:33.860 --> 00:02:35.340
+practices and knowledge.
+
+84
+00:02:35.340 --> 00:02:37.660
+So I'm very excited to welcome you
+
+85
+00:02:37.660 --> 00:02:40.140
+in a new section of asynchronous
+
+86
+00:02:40.140 --> 00:02:41.500
+programming with Python.

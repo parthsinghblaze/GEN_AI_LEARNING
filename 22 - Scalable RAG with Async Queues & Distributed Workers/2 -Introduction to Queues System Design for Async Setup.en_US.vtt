@@ -1,0 +1,397 @@
+WEBVTT
+
+1
+00:00:00.160 --> 00:00:01.760
+All right, so before starting on
+
+2
+00:00:01.760 --> 00:00:03.560
+with the asynchronous coding, I
+
+3
+00:00:03.560 --> 00:00:05.080
+want you to introduce to something
+
+4
+00:00:05.080 --> 00:00:07.920
+known as cues in system design.
+
+5
+00:00:07.920 --> 00:00:08.400
+Okay.
+
+6
+00:00:08.400 --> 00:00:09.840
+Hey Piyush, we just enrolled
+
+7
+00:00:09.840 --> 00:00:11.360
+for Agentic A and how
+
+8
+00:00:11.360 --> 00:00:12.880
+system design is coming in.
+
+9
+00:00:12.880 --> 00:00:15.040
+Yes, system design is everywhere
+
+10
+00:00:15.040 --> 00:00:16.800
+and you need to understand this.
+
+11
+00:00:16.800 --> 00:00:18.840
+So in large systems whenever we
+
+12
+00:00:18.840 --> 00:00:20.800
+talk about asynchronous programming,
+
+13
+00:00:20.800 --> 00:00:22.560
+what we do is we use a data
+
+14
+00:00:22.560 --> 00:00:24.160
+structure known as queue.
+
+15
+00:00:24.160 --> 00:00:24.840
+What is a Q?
+
+16
+00:00:24.840 --> 00:00:25.920
+Q basically works
+
+17
+00:00:25.920 --> 00:00:28.370
+on a principle that is fifo, that is
+
+18
+00:00:28.370 --> 00:00:30.930
+first in and first out.
+
+19
+00:00:30.930 --> 00:00:33.610
+Okay, what we are going to do, I mean
+
+20
+00:00:33.610 --> 00:00:35.090
+what all process we are going to
+
+21
+00:00:35.090 --> 00:00:37.290
+do is we are going to have a Python
+
+22
+00:00:37.290 --> 00:00:39.090
+FAST API server running here.
+
+23
+00:00:39.090 --> 00:00:40.340
+Okay, so let's say this is our
+
+24
+00:00:40.340 --> 00:00:43.570
+HTTP server built in FAST API.
+
+25
+00:00:43.570 --> 00:00:45.970
+Now let us say user has given me
+
+26
+00:00:45.970 --> 00:00:47.850
+some file that hey, let us say
+
+27
+00:00:47.850 --> 00:00:50.210
+here is the file, can you please,
+
+28
+00:00:50.210 --> 00:00:51.610
+you know, or, or maybe, maybe
+
+29
+00:00:51.610 --> 00:00:52.770
+let's, let's not do the file,
+
+30
+00:00:52.770 --> 00:00:53.810
+let's say user will give me a
+
+31
+00:00:53.810 --> 00:00:55.430
+query that hey, can you please
+
+32
+00:00:55.430 --> 00:00:56.470
+resolve this query?
+
+33
+00:00:56.470 --> 00:00:57.070
+Can you please give
+
+34
+00:00:57.070 --> 00:00:58.310
+me the answer to it?
+
+35
+00:00:58.310 --> 00:00:59.550
+So what we are going to do is
+
+36
+00:00:59.550 --> 00:01:01.630
+one way is that you know what
+
+37
+00:01:01.630 --> 00:01:02.910
+you can do, you can actually
+
+38
+00:01:02.910 --> 00:01:04.510
+write your code here, right?
+
+39
+00:01:04.510 --> 00:01:06.150
+You can just write your code here,
+
+40
+00:01:06.150 --> 00:01:08.990
+let the user wait, block your whole
+
+41
+00:01:08.990 --> 00:01:10.790
+server and return the response.
+
+42
+00:01:10.790 --> 00:01:12.110
+That means basically what you
+
+43
+00:01:12.110 --> 00:01:13.630
+can do, let's say that you
+
+44
+00:01:13.630 --> 00:01:15.430
+have a server up and running.
+
+45
+00:01:15.430 --> 00:01:17.670
+Okay, There is a user, User says,
+
+46
+00:01:17.670 --> 00:01:18.990
+hey, can you please explain me
+
+47
+00:01:18.990 --> 00:01:21.680
+about node JS now while, while
+
+48
+00:01:21.680 --> 00:01:23.280
+you are doing the retrieval, your
+
+49
+00:01:23.280 --> 00:01:25.120
+whole server is now blocked.
+
+50
+00:01:25.120 --> 00:01:26.960
+Now if other users are coming
+
+51
+00:01:26.960 --> 00:01:29.160
+to the server, actually the server
+
+52
+00:01:29.160 --> 00:01:30.720
+is busy, this server is busy
+
+53
+00:01:30.720 --> 00:01:32.160
+in resolving this user's query.
+
+54
+00:01:32.160 --> 00:01:33.040
+So this is not a good,
+
+55
+00:01:33.040 --> 00:01:34.160
+good experience, right?
+
+56
+00:01:34.160 --> 00:01:35.360
+Because of one user.
+
+57
+00:01:35.360 --> 00:01:36.439
+Now he is also waiting,
+
+58
+00:01:36.439 --> 00:01:37.520
+he's also waiting.
+
+59
+00:01:37.520 --> 00:01:39.560
+So somehow we need to do something
+
+60
+00:01:39.560 --> 00:01:40.640
+in the background.
+
+61
+00:01:40.640 --> 00:01:42.320
+So rather than doing everything
+
+62
+00:01:42.320 --> 00:01:43.920
+here, we are going to push
+
+63
+00:01:43.920 --> 00:01:46.950
+the request into a queue, okay?
+
+64
+00:01:46.950 --> 00:01:48.710
+And we are going to say we have
+
+65
+00:01:48.710 --> 00:01:50.470
+got your request, please wait.
+
+66
+00:01:50.470 --> 00:01:51.750
+Similarly, if you are getting
+
+67
+00:01:51.750 --> 00:01:53.110
+a lots of requests, a lots
+
+68
+00:01:53.110 --> 00:01:53.750
+of users are coming.
+
+69
+00:01:53.750 --> 00:01:54.870
+We are just going to push
+
+70
+00:01:54.870 --> 00:01:56.950
+the request into the queue.
+
+71
+00:01:56.950 --> 00:01:58.790
+Now here we are going to have
+
+72
+00:01:58.790 --> 00:02:01.550
+a separate processor function,
+
+73
+00:02:01.550 --> 00:02:02.830
+also known as consumer.
+
+74
+00:02:02.830 --> 00:02:04.950
+So you can call this as consumer,
+
+75
+00:02:04.950 --> 00:02:06.910
+you can call this as a processor,
+
+76
+00:02:06.910 --> 00:02:08.550
+however you want to call it.
+
+77
+00:02:08.550 --> 00:02:11.110
+This consumer is going to pick
+
+78
+00:02:11.110 --> 00:02:13.760
+up a task at a time,
+
+79
+00:02:13.760 --> 00:02:16.400
+it is going to do the processing,
+
+80
+00:02:16.400 --> 00:02:18.280
+store the result in some kind
+
+81
+00:02:18.280 --> 00:02:20.320
+of, you know, maybe database.
+
+82
+00:02:20.320 --> 00:02:22.320
+And then when user says, hey,
+
+83
+00:02:22.320 --> 00:02:23.760
+what happened to my job?
+
+84
+00:02:23.760 --> 00:02:25.560
+We can just read the ready
+
+85
+00:02:25.560 --> 00:02:27.520
+response and give it back.
+
+86
+00:02:27.520 --> 00:02:29.840
+So this way, number one, we are
+
+87
+00:02:29.840 --> 00:02:31.680
+actually doing job one by one
+
+88
+00:02:31.680 --> 00:02:33.080
+because we are picking up it from
+
+89
+00:02:33.080 --> 00:02:34.360
+the queue, we are processing it
+
+90
+00:02:34.360 --> 00:02:35.920
+and storing the results here.
+
+91
+00:02:35.920 --> 00:02:38.880
+And our server is never busy
+
+92
+00:02:38.880 --> 00:02:40.480
+in actually doing the retrieval.
+
+93
+00:02:40.480 --> 00:02:41.880
+So this is the whole system design
+
+94
+00:02:41.880 --> 00:02:43.200
+of the asynchronous work.
+
+95
+00:02:43.200 --> 00:02:44.200
+So don't worry, we are going
+
+96
+00:02:44.200 --> 00:02:45.440
+to code all these things.
+
+97
+00:02:45.440 --> 00:02:46.920
+So I just wanted to, give you
+
+98
+00:02:46.920 --> 00:02:48.680
+an idea that how actually queues
+
+99
+00:02:48.680 --> 00:02:49.920
+work in the system design.
