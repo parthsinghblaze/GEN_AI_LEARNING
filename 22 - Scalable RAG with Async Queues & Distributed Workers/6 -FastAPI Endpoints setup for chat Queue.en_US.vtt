@@ -1,0 +1,333 @@
+WEBVTT
+
+1
+00:00:00.160 --> 00:00:01.360
+All right, so in this video,
+
+2
+00:00:01.360 --> 00:00:03.280
+let's set up the fast API.
+
+3
+00:00:03.280 --> 00:00:04.520
+So what I'm going to do, I'm just
+
+4
+00:00:04.520 --> 00:00:06.040
+going to open a new tab and I'm just
+
+5
+00:00:06.040 --> 00:00:07.440
+going to search for fast API.
+
+6
+00:00:07.440 --> 00:00:08.080
+Okay?
+
+7
+00:00:08.080 --> 00:00:09.440
+So fast API setup we have
+
+8
+00:00:09.440 --> 00:00:10.720
+already done before as well.
+
+9
+00:00:10.720 --> 00:00:11.640
+It's very simple.
+
+10
+00:00:11.640 --> 00:00:12.880
+So what we need to do is we need
+
+11
+00:00:12.880 --> 00:00:14.720
+to install fast API standard.
+
+12
+00:00:14.720 --> 00:00:15.520
+Okay?
+
+13
+00:00:15.520 --> 00:00:17.120
+So coming back, I already have
+
+14
+00:00:17.120 --> 00:00:19.440
+fast API, installed here.
+
+15
+00:00:19.440 --> 00:00:21.160
+So let me just close a lot of things.
+
+16
+00:00:21.160 --> 00:00:23.440
+It, you know, it becomes clutter.
+
+17
+00:00:23.440 --> 00:00:25.680
+So let me just create a server
+
+18
+00:00:25.680 --> 00:00:27.390
+py file here, okay?
+
+19
+00:00:27.390 --> 00:00:29.630
+A simple server py file.
+
+20
+00:00:29.630 --> 00:00:31.710
+So in the server py file, first
+
+21
+00:00:31.710 --> 00:00:32.910
+I'm just going to say that
+
+22
+00:00:32.910 --> 00:00:36.030
+from the fast API import, fast API,
+
+23
+00:00:36.030 --> 00:00:37.870
+I'm going to create an app.
+
+24
+00:00:38.430 --> 00:00:39.350
+Really awesome.
+
+25
+00:00:39.350 --> 00:00:41.190
+Okay, let's create a sample
+
+26
+00:00:41.190 --> 00:00:42.150
+route that is, you know,
+
+27
+00:00:42.150 --> 00:00:43.430
+just a sample root route.
+
+28
+00:00:43.430 --> 00:00:44.590
+Server is up and running.
+
+29
+00:00:44.590 --> 00:00:46.030
+And now let's make this
+
+30
+00:00:46.030 --> 00:00:47.070
+server up and running.
+
+31
+00:00:47.070 --> 00:00:48.310
+So for that I'm just going
+
+32
+00:00:48.310 --> 00:00:50.390
+to create a main py file.
+
+33
+00:00:50.390 --> 00:00:52.350
+Okay, this is how I usually like it.
+
+34
+00:00:52.350 --> 00:00:54.550
+In the main py file, I'm just going
+
+35
+00:00:54.550 --> 00:00:56.990
+to say from server, import the app.
+
+36
+00:00:57.630 --> 00:00:59.390
+Okay, Import the app.
+
+37
+00:00:59.390 --> 00:01:00.510
+That's really nice.
+
+38
+00:01:00.510 --> 00:01:01.670
+And we are going
+
+39
+00:01:01.670 --> 00:01:03.790
+to import the uvicorn.
+
+40
+00:01:03.790 --> 00:01:06.510
+Let's create a main function
+
+41
+00:01:06.510 --> 00:01:07.790
+in which I am just going to say
+
+42
+00:01:07.790 --> 00:01:11.270
+Uvcon, please run app for me.
+
+43
+00:01:11.270 --> 00:01:14.030
+Okay, on port, let's say 8080
+
+44
+00:01:14.030 --> 00:01:15.630
+or maybe you can have 8,000
+
+45
+00:01:15.630 --> 00:01:19.950
+and also a host that is 0.0.0.0.
+
+46
+00:01:19.950 --> 00:01:21.270
+And finally let's call
+
+47
+00:01:21.270 --> 00:01:22.590
+the main function.
+
+48
+00:01:22.590 --> 00:01:23.350
+So this is how you
+
+49
+00:01:23.350 --> 00:01:24.410
+are doing the stuff.
+
+50
+00:01:24.410 --> 00:01:25.850
+And by the way, one more thing.
+
+51
+00:01:25.850 --> 00:01:28.290
+You also need a env file.
+
+52
+00:01:28.290 --> 00:01:29.050
+Okay?
+
+53
+00:01:29.050 --> 00:01:30.890
+So inside here, what I'm going to
+
+54
+00:01:30.890 --> 00:01:33.130
+do, I'm just going to say env file.
+
+55
+00:01:33.130 --> 00:01:34.570
+So we need this, right?
+
+56
+00:01:34.570 --> 00:01:36.010
+OpenAI API key.
+
+57
+00:01:36.010 --> 00:01:37.970
+And in the main, I'm just going
+
+58
+00:01:37.970 --> 00:01:40.890
+to say, you know, right here from
+
+59
+00:01:41.530 --> 00:01:46.490
+env import, load env and load
+
+60
+00:01:46.490 --> 00:01:48.330
+the env before running the server.
+
+61
+00:01:49.210 --> 00:01:50.410
+All right, really,
+
+62
+00:01:50.410 --> 00:01:51.610
+really, really awesome.
+
+63
+00:01:51.610 --> 00:01:52.810
+So how to run this main
+
+64
+00:01:52.810 --> 00:01:54.340
+file is very simple.
+
+65
+00:01:54.340 --> 00:01:55.940
+Let me clear the terminal
+
+66
+00:01:55.940 --> 00:01:59.140
+python, The module.
+
+67
+00:01:59.730 --> 00:02:00.540
+I'm just going to go
+
+68
+00:02:00.540 --> 00:02:02.340
+into the rag queue.
+
+69
+00:02:02.340 --> 00:02:03.140
+Okay.
+
+70
+00:02:03.140 --> 00:02:05.020
+And what I basically want
+
+71
+00:02:05.020 --> 00:02:07.220
+to run is the main function.
+
+72
+00:02:07.220 --> 00:02:07.980
+So main.
+
+73
+00:02:07.980 --> 00:02:08.979
+So you can see server
+
+74
+00:02:08.979 --> 00:02:10.500
+is running on 8,000.
+
+75
+00:02:10.500 --> 00:02:11.660
+So if I open this, you can
+
+76
+00:02:11.660 --> 00:02:13.020
+see server is up and running.
+
+77
+00:02:13.020 --> 00:02:15.500
+And if we go on to docs, this is
+
+78
+00:02:15.500 --> 00:02:17.220
+the documentation of a server.
+
+79
+00:02:17.780 --> 00:02:19.020
+So you have successfully
+
+80
+00:02:19.020 --> 00:02:20.740
+done a fast API setup.
+
+81
+00:02:20.740 --> 00:02:21.940
+Now in the next particular
+
+82
+00:02:21.940 --> 00:02:22.940
+video, let's set
+
+83
+00:02:22.940 --> 00:02:25.540
+up an endpoint for ingestion.

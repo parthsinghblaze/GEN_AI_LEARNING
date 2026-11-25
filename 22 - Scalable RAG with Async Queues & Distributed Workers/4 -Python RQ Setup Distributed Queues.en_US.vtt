@@ -1,0 +1,293 @@
+WEBVTT
+
+1
+00:00:00.160 --> 00:00:01.400
+All right, so for queues
+
+2
+00:00:01.400 --> 00:00:03.720
+to work we are going to use rq.
+
+3
+00:00:03.720 --> 00:00:04.440
+Okay, so there is
+
+4
+00:00:04.440 --> 00:00:05.840
+a package that is rq.
+
+5
+00:00:05.840 --> 00:00:08.720
+Let me just search for Python rq.
+
+6
+00:00:08.720 --> 00:00:09.880
+So this is what we are going to use.
+
+7
+00:00:09.880 --> 00:00:12.280
+That is simple job queues for Python.
+
+8
+00:00:12.280 --> 00:00:13.720
+And this is actually used, this
+
+9
+00:00:13.720 --> 00:00:15.240
+uses Redis in the backend.
+
+10
+00:00:15.240 --> 00:00:17.160
+Okay, so that means in order
+
+11
+00:00:17.160 --> 00:00:18.920
+for our queue system to work, we
+
+12
+00:00:18.920 --> 00:00:20.720
+actually need Redis setup.
+
+13
+00:00:20.720 --> 00:00:22.560
+Okay, now here is the thing.
+
+14
+00:00:22.560 --> 00:00:25.400
+You can easily set up Redis locally,
+
+15
+00:00:25.400 --> 00:00:26.960
+but you know, there is one problem
+
+16
+00:00:26.960 --> 00:00:29.000
+with Redis that the Redis open
+
+17
+00:00:29.000 --> 00:00:31.360
+source license was actually revoked.
+
+18
+00:00:31.360 --> 00:00:33.080
+So, so what you can do is either
+
+19
+00:00:33.080 --> 00:00:34.560
+you can go with Redis, that is
+
+20
+00:00:34.560 --> 00:00:36.400
+absolutely fine, it works
+
+21
+00:00:36.400 --> 00:00:38.600
+perfectly fine, or you can use
+
+22
+00:00:38.600 --> 00:00:41.520
+a service known as valkey,
+
+23
+00:00:41.520 --> 00:00:43.640
+which is a drop in replacement
+
+24
+00:00:43.640 --> 00:00:44.720
+for Redis.
+
+25
+00:00:44.720 --> 00:00:46.480
+So that means if I write anything
+
+26
+00:00:46.480 --> 00:00:47.680
+in Redis, it will
+
+27
+00:00:47.680 --> 00:00:49.720
+perfectly work fine in Valky.
+
+28
+00:00:49.720 --> 00:00:50.920
+If I write anything in Valky,
+
+29
+00:00:50.920 --> 00:00:51.840
+it will work in Redis.
+
+30
+00:00:51.840 --> 00:00:53.720
+So Valky is basically a drop
+
+31
+00:00:53.720 --> 00:00:55.240
+in replacement for Redis.
+
+32
+00:00:55.240 --> 00:00:57.040
+So let's set up the Valky.
+
+33
+00:00:57.040 --> 00:00:58.520
+I mean if you want to follow this
+
+34
+00:00:58.520 --> 00:01:00.200
+with Redis, it will absolutely work.
+
+35
+00:01:00.200 --> 00:01:01.560
+There is no code change.
+
+36
+00:01:01.560 --> 00:01:03.360
+Okay, so what I'm going to do is
+
+37
+00:01:03.360 --> 00:01:04.819
+I'm just going to create a new
+
+38
+00:01:04.819 --> 00:01:08.460
+folder right here that is rag Q.
+
+39
+00:01:08.460 --> 00:01:09.260
+Okay?
+
+40
+00:01:09.260 --> 00:01:10.460
+And here what we are going
+
+41
+00:01:10.460 --> 00:01:11.340
+to do is we are going to create
+
+42
+00:01:11.340 --> 00:01:14.820
+a docker, Docker compose file.
+
+43
+00:01:14.820 --> 00:01:16.860
+So Docker compose yml.
+
+44
+00:01:16.860 --> 00:01:18.260
+Okay, so just like we had this
+
+45
+00:01:18.260 --> 00:01:19.420
+Docker compose here, Docker
+
+46
+00:01:19.420 --> 00:01:21.660
+compose yml right here also.
+
+47
+00:01:21.660 --> 00:01:22.620
+Now what do we need?
+
+48
+00:01:22.620 --> 00:01:24.460
+Number one, of course we
+
+49
+00:01:24.460 --> 00:01:26.100
+we need that vector database, right?
+
+50
+00:01:26.100 --> 00:01:27.260
+Our vector database is already
+
+51
+00:01:27.260 --> 00:01:28.460
+up and running, right?
+
+52
+00:01:28.460 --> 00:01:30.500
+So that means I just need what thing
+
+53
+00:01:30.500 --> 00:01:32.430
+VAL key so you can see services.
+
+54
+00:01:32.430 --> 00:01:34.750
+Valky 6379 is the port.
+
+55
+00:01:34.750 --> 00:01:39.310
+Now let me just CD into the rag Q.
+
+56
+00:01:39.310 --> 00:01:43.990
+Rag Q and docker compose A,
+
+57
+00:01:43.990 --> 00:01:45.550
+hyphen D, that's it and enter.
+
+58
+00:01:45.550 --> 00:01:46.550
+So you can see it is pulling
+
+59
+00:01:46.550 --> 00:01:48.030
+valky for me and it will make
+
+60
+00:01:48.030 --> 00:01:49.630
+the Valky up and running.
+
+61
+00:01:49.630 --> 00:01:50.990
+So that means now we have
+
+62
+00:01:50.990 --> 00:01:52.310
+two services up and running.
+
+63
+00:01:52.310 --> 00:01:55.070
+One is this, okay, Vector DB that is
+
+64
+00:01:55.070 --> 00:01:57.350
+on 6333 and we have this
+
+65
+00:01:57.350 --> 00:01:59.590
+Valkey running that is on 6379.
+
+66
+00:01:59.590 --> 00:02:01.390
+That is absolutely great.
+
+67
+00:02:01.390 --> 00:02:02.390
+So you have successfully
+
+68
+00:02:02.390 --> 00:02:03.550
+set up your VAL key.
+
+69
+00:02:03.550 --> 00:02:05.690
+And in the next particular video,
+
+70
+00:02:05.690 --> 00:02:08.009
+let's see how can we use the RQ
+
+71
+00:02:08.009 --> 00:02:09.690
+Python RQ setup, how to set up
+
+72
+00:02:09.690 --> 00:02:12.690
+the RQ and the fast API to make this
+
+73
+00:02:12.690 --> 00:02:14.570
+whole thing asynchronously workable.

@@ -56,6 +56,7 @@ python -m venv .venv
    - **In PowerShell:**
      ```powershell
      .\.venv\Scripts\Activate.ps1
+     for codespace: source .venv/bin/activate
      ```
    - **In Command Prompt (cmd):**
      ```cmd

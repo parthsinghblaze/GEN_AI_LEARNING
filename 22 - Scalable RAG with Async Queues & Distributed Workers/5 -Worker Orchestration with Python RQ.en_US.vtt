@@ -1,0 +1,565 @@
+WEBVTT
+
+1
+00:00:00.160 --> 00:00:01.720
+All right guys, so now we
+
+2
+00:00:01.720 --> 00:00:03.160
+have already made a client.
+
+3
+00:00:03.160 --> 00:00:04.920
+Let me just create an init file
+
+4
+00:00:04.920 --> 00:00:06.800
+to make it a module, okay?
+
+5
+00:00:06.800 --> 00:00:08.280
+Now what we are going to do is we are
+
+6
+00:00:08.280 --> 00:00:10.400
+going to create a worker file here.
+
+7
+00:00:10.400 --> 00:00:11.560
+So in the queues, let's
+
+8
+00:00:11.560 --> 00:00:13.680
+create a worker PY file.
+
+9
+00:00:13.680 --> 00:00:14.600
+And what we are going
+
+10
+00:00:14.600 --> 00:00:16.079
+to do in the worker PY
+
+11
+00:00:16.079 --> 00:00:17.600
+file, it is very simple.
+
+12
+00:00:17.600 --> 00:00:18.760
+So what I'm going to do is,
+
+13
+00:00:18.760 --> 00:00:20.480
+see, I'm going to create a function
+
+14
+00:00:20.480 --> 00:00:22.240
+that is process query.
+
+15
+00:00:22.240 --> 00:00:24.040
+So user is going to give me a query.
+
+16
+00:00:24.040 --> 00:00:25.320
+Let's say you are going to give
+
+17
+00:00:25.320 --> 00:00:27.040
+me a query and I am going
+
+18
+00:00:27.040 --> 00:00:28.480
+to do the retrieval and I am going
+
+19
+00:00:28.480 --> 00:00:29.600
+to do everything here, okay?
+
+20
+00:00:29.600 --> 00:00:31.440
+Okay, so that means
+
+21
+00:00:31.440 --> 00:00:33.080
+this, this code now looks very
+
+22
+00:00:33.080 --> 00:00:34.120
+familiar to you because we
+
+23
+00:00:34.120 --> 00:00:35.240
+have already done the rag.
+
+24
+00:00:35.240 --> 00:00:36.920
+Okay, so that means I'm just going
+
+25
+00:00:36.920 --> 00:00:38.720
+to borrow some code from here.
+
+26
+00:00:38.720 --> 00:00:40.200
+What you have to do is you
+
+27
+00:00:40.200 --> 00:00:42.160
+have to technically do
+
+28
+00:00:42.160 --> 00:00:43.720
+all these similar things.
+
+29
+00:00:43.720 --> 00:00:45.439
+That means, for example,
+
+30
+00:00:45.439 --> 00:00:46.440
+see, I'm just going to copy
+
+31
+00:00:46.440 --> 00:00:47.560
+paste the code as of now.
+
+32
+00:00:47.560 --> 00:00:50.880
+Okay, you need to import the OpenAI.
+
+33
+00:00:50.880 --> 00:00:52.440
+That's pretty simple.
+
+34
+00:00:52.440 --> 00:00:53.920
+Let me just you know,
+
+35
+00:00:53.920 --> 00:00:55.360
+move it into a split mode so
+
+36
+00:00:55.360 --> 00:00:56.240
+that we can see better.
+
+37
+00:00:56.240 --> 00:00:57.940
+And let me move the chart here.
+
+38
+00:00:57.940 --> 00:01:00.180
+Okay, then let's create
+
+39
+00:01:00.180 --> 00:01:01.420
+an OpenAI client.
+
+40
+00:01:01.420 --> 00:01:02.980
+This is something we need, right?
+
+41
+00:01:02.980 --> 00:01:06.140
+We also need these two imports, okay?
+
+42
+00:01:06.140 --> 00:01:08.100
+That is the OpenAI embeddings
+
+43
+00:01:08.100 --> 00:01:10.420
+and we also need the vector store.
+
+44
+00:01:10.420 --> 00:01:12.660
+That is absolutely amazing.
+
+45
+00:01:12.660 --> 00:01:14.059
+Now this is my vector
+
+46
+00:01:14.059 --> 00:01:15.380
+embeddings, okay.
+
+47
+00:01:15.380 --> 00:01:17.540
+This is my vector db.
+
+48
+00:01:18.420 --> 00:01:21.100
+In the process query, what we
+
+49
+00:01:21.100 --> 00:01:23.060
+are going to do is we are going
+
+50
+00:01:23.060 --> 00:01:25.260
+to say that hey, I need to do
+
+51
+00:01:25.260 --> 00:01:27.020
+the same search results, okay?
+
+52
+00:01:27.020 --> 00:01:28.700
+And, and, and let me just also
+
+53
+00:01:28.700 --> 00:01:29.940
+do some print statement so
+
+54
+00:01:29.940 --> 00:01:31.900
+you can see searching chunks.
+
+55
+00:01:31.900 --> 00:01:32.700
+Great.
+
+56
+00:01:32.700 --> 00:01:33.420
+Search results.
+
+57
+00:01:33.420 --> 00:01:34.380
+You got something?
+
+58
+00:01:34.380 --> 00:01:36.100
+Okay, then you have
+
+59
+00:01:36.100 --> 00:01:37.300
+to prepare the context.
+
+60
+00:01:37.300 --> 00:01:38.380
+I'll just say, okay,
+
+61
+00:01:38.380 --> 00:01:39.660
+here is your context.
+
+62
+00:01:39.660 --> 00:01:40.540
+Amazing.
+
+63
+00:01:40.540 --> 00:01:41.740
+Then you need this
+
+64
+00:01:41.740 --> 00:01:43.180
+system prompt, right?
+
+65
+00:01:43.180 --> 00:01:44.900
+So let's just say this, this comes
+
+66
+00:01:44.900 --> 00:01:46.940
+your system prompt right here.
+
+67
+00:01:46.940 --> 00:01:48.260
+And finally you are going
+
+68
+00:01:48.260 --> 00:01:49.420
+to make a call.
+
+69
+00:01:49.420 --> 00:01:51.430
+Finally you are going to make a call.
+
+70
+00:01:51.430 --> 00:01:52.390
+And this is going to be query
+
+71
+00:01:52.390 --> 00:01:53.830
+now not user query, query.
+
+72
+00:01:54.390 --> 00:01:56.910
+And then what I can do is I
+
+73
+00:01:56.910 --> 00:01:59.790
+can just return whatever AI
+
+74
+00:01:59.790 --> 00:02:00.950
+has responded me, right?
+
+75
+00:02:00.950 --> 00:02:02.070
+I can just say return.
+
+76
+00:02:02.630 --> 00:02:04.910
+So what I have done is whatever
+
+77
+00:02:04.910 --> 00:02:06.590
+we were doing before in this
+
+78
+00:02:06.590 --> 00:02:08.430
+particular file, let, me just
+
+79
+00:02:08.430 --> 00:02:09.830
+also put up a print statement just
+
+80
+00:02:10.710 --> 00:02:12.230
+for the simplicity sake.
+
+81
+00:02:12.230 --> 00:02:13.910
+So what we have basically done
+
+82
+00:02:13.910 --> 00:02:16.030
+is, you can see, this is
+
+83
+00:02:16.030 --> 00:02:18.110
+actually response choices.
+
+84
+00:02:18.110 --> 00:02:20.830
+Yeah, we have written the same code
+
+85
+00:02:20.830 --> 00:02:23.430
+but inside a process query function.
+
+86
+00:02:23.430 --> 00:02:25.990
+Now how are we going to call
+
+87
+00:02:25.990 --> 00:02:27.870
+this process query function?
+
+88
+00:02:27.870 --> 00:02:29.190
+Okay, that is the answer.
+
+89
+00:02:29.830 --> 00:02:30.870
+Query is here.
+
+90
+00:02:30.870 --> 00:02:32.310
+And I'm somehow getting
+
+91
+00:02:32.310 --> 00:02:33.710
+this red squiggly lines.
+
+92
+00:02:33.710 --> 00:02:34.830
+Yeah, because I forgot
+
+93
+00:02:34.830 --> 00:02:35.710
+to close this function.
+
+94
+00:02:35.710 --> 00:02:35.990
+Right?
+
+95
+00:02:36.630 --> 00:02:37.350
+Yeah.
+
+96
+00:02:37.350 --> 00:02:38.590
+So what we are going to do is
+
+97
+00:02:38.590 --> 00:02:40.230
+this process function, this
+
+98
+00:02:40.230 --> 00:02:42.710
+process query is going to be run
+
+99
+00:02:42.710 --> 00:02:44.670
+inside a queue worker.
+
+100
+00:02:44.670 --> 00:02:46.190
+We are not going to run it directly.
+
+101
+00:02:46.190 --> 00:02:46.990
+This is going to run
+
+102
+00:02:46.990 --> 00:02:48.630
+inside a Q worker.
+
+103
+00:02:48.630 --> 00:02:51.780
+How Basically what we can do, okay,
+
+104
+00:02:51.780 --> 00:02:52.660
+do you remember that
+
+105
+00:02:52.660 --> 00:02:54.180
+we had this queue here?
+
+106
+00:02:54.180 --> 00:02:56.540
+We can just say like queue.in
+
+107
+00:02:56.540 --> 00:02:58.980
+queue, okay, enqueue and I can pass
+
+108
+00:02:58.980 --> 00:03:00.180
+that function here.
+
+109
+00:03:00.180 --> 00:03:01.260
+This is how we are going
+
+110
+00:03:01.260 --> 00:03:02.180
+to enqueue it.
+
+111
+00:03:02.180 --> 00:03:04.300
+Okay, so that means, that means
+
+112
+00:03:04.300 --> 00:03:05.550
+coming back to my,
+
+113
+00:03:05.550 --> 00:03:07.500
+you know, blackboard, we are going
+
+114
+00:03:07.500 --> 00:03:10.060
+to create a FAST API server.
+
+115
+00:03:10.060 --> 00:03:11.900
+We are going to create a post route,
+
+116
+00:03:11.900 --> 00:03:14.620
+that is chat, where user is going to
+
+117
+00:03:14.620 --> 00:03:16.900
+give me a message as a post request.
+
+118
+00:03:16.900 --> 00:03:18.580
+What we are going to do is in this
+
+119
+00:03:18.580 --> 00:03:21.130
+particular route, we are going to
+
+120
+00:03:21.130 --> 00:03:23.210
+enqueue a message into the queue.
+
+121
+00:03:23.210 --> 00:03:23.490
+Right?
+
+122
+00:03:23.490 --> 00:03:25.050
+We are going to enqueue this query.
+
+123
+00:03:25.690 --> 00:03:27.850
+Now our processor function,
+
+124
+00:03:27.850 --> 00:03:29.570
+which we just coded here, right?
+
+125
+00:03:29.570 --> 00:03:31.290
+This processor function
+
+126
+00:03:31.290 --> 00:03:34.130
+will take this query, process it
+
+127
+00:03:34.130 --> 00:03:37.450
+and store the data in the redis.
+
+128
+00:03:37.450 --> 00:03:39.210
+Now we are going to create one more.
+
+129
+00:03:39.210 --> 00:03:40.250
+Okay, we are going to create
+
+130
+00:03:40.250 --> 00:03:42.250
+one more route that is result
+
+131
+00:03:42.250 --> 00:03:43.610
+for fetching the result.
+
+132
+00:03:43.610 --> 00:03:45.050
+So user can basically use
+
+133
+00:03:45.050 --> 00:03:46.170
+this particular route
+
+134
+00:03:46.170 --> 00:03:48.210
+to fetch the result back that.
+
+135
+00:03:48.210 --> 00:03:50.020
+Hey, what happened to my result?
+
+136
+00:03:50.020 --> 00:03:51.620
+So this is how we want to code.
+
+137
+00:03:51.620 --> 00:03:53.620
+So we have written the processor
+
+138
+00:03:53.620 --> 00:03:54.780
+function successfully.
+
+139
+00:03:54.780 --> 00:03:56.700
+Now in the next video, let's set
+
+140
+00:03:56.700 --> 00:03:58.940
+up the fast API and let's tie
+
+141
+00:03:58.940 --> 00:04:00.180
+up all this thing.

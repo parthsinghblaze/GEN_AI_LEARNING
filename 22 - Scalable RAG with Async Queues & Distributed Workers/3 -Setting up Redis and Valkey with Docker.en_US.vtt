@@ -1,0 +1,285 @@
+WEBVTT
+
+1
+00:00:00.160 --> 00:00:01.440
+All right guys, so in this
+
+2
+00:00:01.440 --> 00:00:03.400
+particular video let's quickly set
+
+3
+00:00:03.400 --> 00:00:05.440
+up the RQ that is redis queue
+
+4
+00:00:05.440 --> 00:00:07.200
+package, which is a simple Python
+
+5
+00:00:07.200 --> 00:00:08.800
+library for queuing jobs.
+
+6
+00:00:08.800 --> 00:00:10.560
+So it's very simple actually.
+
+7
+00:00:10.560 --> 00:00:11.560
+So if you scroll down,
+
+8
+00:00:11.560 --> 00:00:12.720
+there is an installation
+
+9
+00:00:12.720 --> 00:00:14.320
+that is PIP install rq.
+
+10
+00:00:14.320 --> 00:00:15.200
+Yes, that's it.
+
+11
+00:00:15.200 --> 00:00:17.360
+Okay, so I'm just going to say,
+
+12
+00:00:17.360 --> 00:00:19.640
+let me just do a CD dot dot because
+
+13
+00:00:19.640 --> 00:00:21.000
+I want to do PIP freeze as well.
+
+14
+00:00:21.000 --> 00:00:23.400
+So PIP install iq and finally
+
+15
+00:00:23.400 --> 00:00:24.640
+let's run my favorite
+
+16
+00:00:24.640 --> 00:00:26.780
+command that is PIP freeze.
+
+17
+00:00:26.780 --> 00:00:27.340
+Amazing.
+
+18
+00:00:27.900 --> 00:00:29.940
+Now how to set up the RQ
+
+19
+00:00:29.940 --> 00:00:31.020
+is actually very simple.
+
+20
+00:00:31.020 --> 00:00:32.380
+Okay, There are two things.
+
+21
+00:00:32.940 --> 00:00:35.060
+One is a producer who
+
+22
+00:00:35.060 --> 00:00:37.140
+basically produces the messages
+
+23
+00:00:37.140 --> 00:00:37.940
+into the queue.
+
+24
+00:00:37.940 --> 00:00:39.460
+That is this particular part, let me
+
+25
+00:00:39.460 --> 00:00:41.100
+just change the color real quick.
+
+26
+00:00:41.100 --> 00:00:42.579
+So this is the part that is
+
+27
+00:00:42.579 --> 00:00:43.900
+queuing the messages, and this
+
+28
+00:00:43.900 --> 00:00:44.980
+is the consumer which
+
+29
+00:00:44.980 --> 00:00:46.140
+is consuming the messages.
+
+30
+00:00:46.140 --> 00:00:49.190
+Okay, so that means we need to first
+
+31
+00:00:49.190 --> 00:00:50.780
+you know, set up the queues.
+
+32
+00:00:50.780 --> 00:00:51.940
+So this is the structure
+
+33
+00:00:51.940 --> 00:00:52.620
+that I follow.
+
+34
+00:00:52.620 --> 00:00:54.580
+Usually I'll create a folder
+
+35
+00:00:54.580 --> 00:00:57.570
+that is queues and I also create
+
+36
+00:00:57.570 --> 00:00:59.450
+a folder known as client.
+
+37
+00:00:59.450 --> 00:01:01.370
+So client basically contains
+
+38
+00:01:01.370 --> 00:01:02.970
+the connection information.
+
+39
+00:01:02.970 --> 00:01:04.290
+Queues is basically where
+
+40
+00:01:04.290 --> 00:01:05.610
+I keep the workers.
+
+41
+00:01:05.610 --> 00:01:07.210
+So in the client, let's create
+
+42
+00:01:07.850 --> 00:01:11.530
+rq, rq, client py.
+
+43
+00:01:11.530 --> 00:01:13.650
+Okay, so here what we are going
+
+44
+00:01:13.650 --> 00:01:15.370
+to do, let's let's see this
+
+45
+00:01:15.370 --> 00:01:16.650
+how, how the connection goes.
+
+46
+00:01:16.650 --> 00:01:18.490
+I'll just say from redis, okay,
+
+47
+00:01:18.490 --> 00:01:21.090
+from redis, import the redis,
+
+48
+00:01:21.090 --> 00:01:22.940
+we need the redis and from
+
+49
+00:01:23.580 --> 00:01:26.060
+our queue we need the queue.
+
+50
+00:01:26.060 --> 00:01:28.460
+And then I can just say queue
+
+51
+00:01:28.460 --> 00:01:30.660
+equals this queue and we need
+
+52
+00:01:30.660 --> 00:01:32.460
+to give it a connection that
+
+53
+00:01:32.460 --> 00:01:34.140
+is this redis connection.
+
+54
+00:01:34.140 --> 00:01:35.940
+And in this redis connection I can
+
+55
+00:01:35.940 --> 00:01:38.140
+give a host that is my local host
+
+56
+00:01:38.140 --> 00:01:40.420
+and I can also give a port, what
+
+57
+00:01:40.420 --> 00:01:42.508
+was the port we were using, I.e.
+
+58
+00:01:42.508 --> 00:01:44.460
+6379 as the port.
+
+59
+00:01:44.460 --> 00:01:46.300
+So this is basically your connection
+
+60
+00:01:46.300 --> 00:01:47.820
+from the RQ which is using this
+
+61
+00:01:47.820 --> 00:01:50.060
+redis connection at the backend.
+
+62
+00:01:50.060 --> 00:01:51.380
+Amazing stuff guys.
+
+63
+00:01:51.380 --> 00:01:52.780
+Now what you have done is using
+
+64
+00:01:52.780 --> 00:01:53.940
+this queue, you can see you
+
+65
+00:01:53.940 --> 00:01:55.000
+have have a functions like
+
+66
+00:01:55.000 --> 00:01:57.480
+in queue, in Q, add INQ call.
+
+67
+00:01:57.480 --> 00:01:59.360
+So you can basically keep in queuing
+
+68
+00:01:59.360 --> 00:02:00.800
+some messages using this queue.
+
+69
+00:02:00.800 --> 00:02:03.160
+And now in the upcoming videos
+
+70
+00:02:03.160 --> 00:02:05.160
+let's also understand how to set
+
+71
+00:02:05.160 --> 00:02:07.800
+up workers in the Python rq.

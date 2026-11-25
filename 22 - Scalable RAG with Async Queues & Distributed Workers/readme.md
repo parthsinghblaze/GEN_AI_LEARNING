@@ -322,3 +322,173 @@ mindmap
 2. **Producer vs. Consumer Pattern:** The web server acts as the **Producer** (pushing jobs); background processors act as **Consumers** (executing jobs).
 3. **FIFO Guarantees Fairness:** Jobs are processed sequentially and predictably without starving early requests.
 4. **The Foundation of Production RAG:** In the upcoming sections, we will build this exact architecture using **FastAPI**, **Async Task Queues**, and **Dedicated Background Workers**.
+
+---
+
+# 3. Setting Up Redis, Valkey & Python RQ (Redis Queue)
+
+## 1. The Queue Broker: Redis vs. Valkey
+
+To make an asynchronous queue work in production, our application requires an **in-memory data store / message broker** that temporarily holds queued tasks until background workers pick them up.
+
+```mermaid
+flowchart LR
+    A["Producer (FastAPI / Script)"] -->|Enqueue Task| B[("Broker (Redis / Valkey)<br/>Port: 6379")]
+    B -->|Dequeue & Execute| C["Consumer (RQ Worker)"]
+
+    style A fill:#e1f5fe,stroke:#0288d1
+    style B fill:#ffebee,stroke:#d32f2f
+    style C fill:#e8f5e9,stroke:#388e3c
+```
+
+### Why Redis?
+* **Ultra-low latency:** Stores data in-memory (RAM) with sub-millisecond read/write speeds.
+* **Native Queue primitives:** Supports FIFO list operations (`LPUSH`, `RPOP`), streams, and pub/sub mechanisms out of the box.
+
+### The Shift to Valkey: A Truly Open-Source Drop-in Replacement
+In early 2024, Redis moved away from its permissive open-source license (BSD) to a restrictive dual-license model (RSALv2 / SSPLv1). In response, the **Linux Foundation** alongside major tech companies (AWS, Google Cloud, Oracle, Ericsson) established **Valkey**.
+
+* **100% Drop-in Compatibility:** Valkey speaks the exact same Redis serialization protocol (RESP), uses the exact same commands, and listens on the default port `6379`.
+* **Zero Code Changes:** Any Python library built for Redis (`redis-py`, `rq`, `celery`) works identically with Valkey without changing a single line of application code.
+
+---
+
+## 2. Running Redis / Valkey with Docker
+
+Instead of installing Redis/Valkey directly onto the host operating system, we containerize it using Docker Compose. This ensures reproducibility and isolation across environments (local development, Codespaces, or cloud production).
+
+### The `docker-compose.yml` Configuration
+
+Create a `docker-compose.yml` file in your queue project folder:
+
+```yaml
+version: "3.8"
+
+services:
+  valkey:
+    image: valkey/valkey:latest
+    container_name: valkey_queue
+    restart: always
+    ports:
+      - "6379:6379"
+```
+
+> **Note:** If you prefer standard Redis, you can swap `image: valkey/valkey:latest` with `image: redis:latest`. The port mapping (`6379:6379`) remains identical.
+
+### Starting the Service
+Start the container in detached (background) mode:
+
+```bash
+docker compose up -d
+```
+
+### Checking Running Services
+Verify that the message broker is up and listening on port `6379`:
+
+```bash
+docker ps
+```
+
+In a full RAG environment, you will have two core infrastructure services running side by side:
+1. **Vector Database (e.g., Qdrant):** Typically listening on port `6333` (storing document embeddings).
+2. **Task Queue Broker (Valkey / Redis):** Listening on port `6379` (holding background task payloads).
+
+---
+
+## 3. Python RQ (Redis Queue)
+
+**RQ (Redis Queue)** is a lightweight, easy-to-use Python library for queueing jobs and processing them in the background with worker threads/processes. It uses Redis (or Valkey) as its backend broker.
+
+### Installation
+Activate your virtual environment and install `rq`:
+
+```bash
+pip install rq
+pip freeze > requirements.txt
+```
+
+---
+
+## 4. Architectural Roles: Producer vs. Consumer in RQ
+
+RQ cleanly divides responsibilities between two core entities:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Client
+    participant Producer as Producer (rq_client.py / FastAPI)
+    participant Broker as Valkey / Redis (Port 6379)
+    participant Worker as Consumer (RQ Worker)
+
+    User->>Producer: Requests heavy RAG operation
+    Producer->>Broker: queue.enqueue(heavy_task, arg1, arg2)
+    Broker-->>Producer: Returns Job ID immediately
+    Producer-->>User: 202 Accepted {"job_id": "..."}
+    
+    Note over Broker,Worker: Job sits in FIFO queue
+    Worker->>Broker: Polls / pops next job
+    Worker->>Worker: Executes heavy_task() in background
+```
+
+1. **Producer:**
+   - Any Python script or web endpoint that needs background execution.
+   - Responsible for pushing tasks into the queue using `queue.enqueue(...)`.
+   - Never performs heavy computation itself.
+2. **Consumer (Worker):**
+   - A standalone background Python process.
+   - Continuously listens to the queue, pops waiting tasks, executes the designated Python function, and saves results.
+
+---
+
+## 5. Recommended Production Directory Structure
+
+To keep queue orchestration clean, modular, and maintainable, we separate connection configurations from worker logic:
+
+```
+rag_queue_project/
+├── client/
+│   └── rq_client.py        # Connection setup to Redis/Valkey & Queue instance
+├── queues/
+│   └── worker.py           # Background worker execution logic
+├── docker-compose.yml      # Valkey / Redis container configuration
+├── requirements.txt        # Pinned dependencies (rq, redis, etc.)
+└── .env                    # Environment credentials & connection strings
+```
+
+* **`client/` folder:** Contains singleton client connections (e.g., `rq_client.py`).
+* **`queues/` folder:** Contains worker definition functions and background task handlers.
+
+---
+
+## 6. Initializing the RQ Client (`client/rq_client.py`)
+
+Create `client/rq_client.py` to establish the connection between Python RQ and our Redis/Valkey broker:
+
+```python
+from redis import Redis
+from rq import Queue
+
+# 1. Establish connection to Redis / Valkey on localhost:6379
+redis_connection = Redis(
+    host="localhost",
+    port=6379
+)
+
+# 2. Initialize the RQ Queue instance using this connection
+queue = Queue(connection=redis_connection)
+```
+
+### Key Queue Methods Provided by RQ:
+* **`queue.enqueue(func, *args, **kwargs)`:** Pushes a function and its arguments into the queue. Returns an `rq.job.Job` instance containing a unique `job.id`.
+* **`queue.count`:** Returns the number of jobs currently waiting in the queue.
+* **`queue.empty()`:** Flushes/clears pending jobs in the queue.
+
+---
+
+## Summary Key Takeaways
+
+1. **Valkey is a Drop-in Redis Replacement:** Valkey provides a community-driven, 100% open-source alternative to Redis that uses the exact same protocol and port (`6379`).
+2. **Docker Simplifies Broker Deployment:** Using `docker compose up -d` allows running Valkey/Redis instantly without cluttering the host machine.
+3. **RQ Simplifies Python Queues:** Python RQ requires only a single Redis connection and a `Queue` instance to begin pushing background tasks.
+4. **Clean Code Structure:** Separating client connections (`client/rq_client.py`) from task workers (`queues/`) makes distributed systems modular and ready for horizontal scaling.
