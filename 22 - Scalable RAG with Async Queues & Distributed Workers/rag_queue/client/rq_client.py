@@ -6,4 +6,4 @@ redis_connection = Redis(
     port=6379
 )
 
-queue = Queue(connection=redis_connection)
+queues = Queue(connection=redis_connection)
